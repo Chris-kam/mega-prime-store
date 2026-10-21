@@ -1,0 +1,25 @@
+<svg width="220" height="48" viewBox="0 0 220 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="mpGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stopColor="#E75480" />
+      <stop offset="100%" stopColor="#C2185B" />
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stopColor="#E6C280" />
+      <stop offset="100%" stopColor="#D4A373" />
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" floodColor="#C2185B" floodOpacity="0.25" />
+    </filter>
+  </defs>
+
+  <!-- Emblem Icon -->
+  <rect x="4" y="4" width="40" height="40" rx="10" fill="url(#mpGrad)" filter="url(#shadow)" />
+  <rect x="5.5" y="5.5" width="37" height="37" rx="8.5" stroke="rgba(255, 255, 255, 0.35)" strokeWidth="1.5" />
+  <path d="M14 32V17.5L22.5 26.5C23.3 27.3 24.7 27.3 25.5 26.5L34 17.5V32" stroke="#FFFFFF" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M24 12.5L25.5 15.5L28.5 16L26 18.5L26.8 21.5L24 20L21.2 21.5L22 18.5L19.5 16L22.5 15.5L24 12.5Z" fill="url(#goldGrad)" />
+
+  <!-- Typography -->
+  <text x="54" y="29" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-weight="900" font-size="22" fill="#2D2430" letter-spacing="-0.5">Mega<tspan fill="#C2185B">prime</tspan><tspan fill="#D4A373" font-size="14" dx="3">✦</tspan></text>
+  <text x="55" y="41" font-family="'Inter', monospace" font-weight="600" font-size="8.5" fill="#8A7F8E" letter-spacing="2">SMART EVERYDAY LIVING</text>
+</svg>

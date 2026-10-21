@@ -1,0 +1,8 @@
+{
+  "name": "Mega-prime store — Smart Products",
+  "description": "Blush & Bloom by Megaprime — Contemporary Nigerian & international fashion store offering elegant dresses, vibrant Ankara prints, co-ords, shoes, and luxury bags with free nationwide delivery.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

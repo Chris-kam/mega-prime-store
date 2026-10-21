@@ -1,0 +1,48 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #E75480;
+  --color-primary-dark: #C2185B;
+  --color-blush: #FFF5F8;
+  --color-card-tint: #FFE4EC;
+  --color-gold: #D4A373;
+  --color-app-text: #2D2430;
+  --color-app-muted: #8A7F8E;
+}
+
+@layer base {
+  :root {
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: #2D2430;
+    background-color: #FFF5F8;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    color: #2D2430;
+    background-color: #FFF5F8;
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6, .font-display, .font-heading, .font-price, .product-title, .hero-heading {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: #2D2430;
+  }
+
+  p, span, label, input, select, textarea, table, nav, .font-body {
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  button, .btn, a[role="button"], input[type="button"], input[type="submit"], input[type="reset"] {
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-weight: 600;
+    border-radius: 5px !important;
+  }
+
+  img {
+    border-radius: 5px !important;
+  }
+}
