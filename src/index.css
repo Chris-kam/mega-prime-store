@@ -8,6 +8,19 @@
   --color-gold: #D4A373;
   --color-app-text: #2D2430;
   --color-app-muted: #8A7F8E;
+
+  /* Custom xs breakpoint for very small phones (iPhone SE, Galaxy A, etc.) */
+  --breakpoint-xs: 475px;
+}
+
+@layer utilities {
+  .scrollbar-none {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 @layer base {

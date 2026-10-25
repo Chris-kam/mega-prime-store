@@ -47,18 +47,19 @@ export const Header: React.FC<HeaderProps> = ({
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-[#FFE4EC]">
       {/* Top announcement bar */}
-      <div className="bg-[#2D2430] text-white text-[11px] sm:text-xs py-2 px-4 border-b border-[#3D3242]">
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
-          <div className="flex items-center gap-2 overflow-hidden">
+      <div className="bg-[#2D2430] text-white text-[11px] sm:text-xs py-2 px-3 sm:px-4 border-b border-[#3D3242]">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2 overflow-hidden min-w-0">
             <span className="relative flex h-2 w-2 shrink-0">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#E75480] opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-[#E75480]"></span>
             </span>
-            <span className="text-[#E75480] font-bold tracking-wider shrink-0 font-mono">
+            <span className="text-[#E75480] font-bold tracking-wider shrink-0 font-mono hidden xs:inline">
               BLUSH &amp; BLOOM:
             </span>
-            <span className="text-white/90 truncate font-medium">
-              Free delivery nationwide · Pay on delivery available across all 36 States + FCT
+            <span className="text-white/90 truncate font-medium text-[10px] sm:text-[11px]">
+              <span className="xs:hidden">Free delivery · Pay on delivery 🇳🇬</span>
+              <span className="hidden xs:inline">Free delivery nationwide · Pay on delivery available across all 36 States + FCT</span>
             </span>
           </div>
 
@@ -82,17 +83,17 @@ export const Header: React.FC<HeaderProps> = ({
       </div>
 
       {/* Main navigation header */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 sm:h-20">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-14 sm:h-20 gap-2">
           {/* Logo */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center shrink-0">
             <button
               onClick={() => handleNav('/')}
-              className="text-left group flex items-center gap-3 focus:outline-none"
+              className="text-left group flex items-center focus:outline-none"
               id="brand-logo-btn"
               aria-label="Megaprime Blush & Bloom Home"
             >
-              <MegaprimeLogo className="h-9 sm:h-10 w-auto" variant="colored" />
+              <MegaprimeLogo className="h-8 sm:h-10 w-auto" variant="colored" />
             </button>
           </div>
 
@@ -208,23 +209,23 @@ export const Header: React.FC<HeaderProps> = ({
           </nav>
 
           {/* Right Action Buttons */}
-          <div className="flex items-center gap-2.5 sm:gap-3">
-            {/* AI Content Pipeline Admin Button */}
+          <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
+            {/* AI Content Pipeline Admin Button — hidden on mobile (accessible via mobile drawer) */}
             <button
               onClick={onOpenPipelineModal}
               title="Regenerate fashion copy and images via Gemini & Unsplash"
-              className="inline-flex items-center gap-1.5 bg-[#FFF5F8] hover:bg-[#FFE4EC] text-[#C2185B] border border-[#E75480]/40 text-xs font-mono font-bold px-3 py-2 rounded-[5px] transition-all shadow-xs"
+              className="hidden sm:inline-flex items-center gap-1.5 bg-[#FFF5F8] hover:bg-[#FFE4EC] text-[#C2185B] border border-[#E75480]/40 text-xs font-mono font-bold px-3 py-2 rounded-[5px] transition-all shadow-xs"
             >
               <Sparkles className="w-3.5 h-3.5 text-[#E75480] animate-pulse" />
-              <span className="hidden sm:inline">AI Pipeline</span>
+              <span className="hidden lg:inline">AI Pipeline</span>
             </button>
 
             {/* View Catalog CTA */}
             <button
               onClick={() => handleNav('/products')}
-              className="inline-flex items-center gap-2 bg-[#E75480] hover:bg-[#C2185B] text-white text-xs sm:text-sm font-bold px-4 py-2 sm:px-5 sm:py-2.5 rounded-[5px] transition-all shadow-xs active:scale-95"
+              className="inline-flex items-center gap-1.5 sm:gap-2 bg-[#E75480] hover:bg-[#C2185B] text-white text-[11px] sm:text-sm font-bold px-3 py-2 sm:px-5 sm:py-2.5 rounded-[5px] transition-all shadow-xs active:scale-95 whitespace-nowrap"
             >
-              <ShoppingBag className="w-4 h-4" />
+              <ShoppingBag className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               <span className="hidden sm:inline">SHOP 40 LOOKS</span>
               <span className="sm:hidden">SHOP</span>
             </button>
@@ -232,7 +233,7 @@ export const Header: React.FC<HeaderProps> = ({
             {/* Mobile menu toggle */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 text-[#2D2430] hover:text-[#C2185B] rounded-[5px] border border-[#FFE4EC] bg-[#FFF5F8]"
+              className="md:hidden p-1.5 sm:p-2 text-[#2D2430] hover:text-[#C2185B] rounded-[5px] border border-[#FFE4EC] bg-[#FFF5F8] shrink-0"
               aria-label="Toggle navigation menu"
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}

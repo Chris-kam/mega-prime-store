@@ -43,6 +43,7 @@ export const HomePage: React.FC<HomePageProps> = ({
     {
       id: 'new-season',
       badge: 'NEW SEASON 2026',
+      badgeShort: 'NEW SEASON',
       badgeColor: '#E75480',
       title: 'Contemporary Silhouettes & Ethereal Drapes.',
       subtitle:
@@ -55,6 +56,7 @@ export const HomePage: React.FC<HomePageProps> = ({
     {
       id: 'weekend-sale',
       badge: 'WEEKEND FLASH SALE',
+      badgeShort: 'FLASH SALE',
       badgeColor: '#C2185B',
       title: 'Up to 35% Off Curated Best Sellers.',
       subtitle:
@@ -67,6 +69,7 @@ export const HomePage: React.FC<HomePageProps> = ({
     {
       id: 'owambe-bridal',
       badge: 'OWAMBE & BRIDAL EDIT',
+      badgeShort: 'OWAMBE',
       badgeColor: '#D4A373',
       title: 'Handcrafted Ankara & Regal Occasionwear.',
       subtitle:
@@ -156,21 +159,22 @@ export const HomePage: React.FC<HomePageProps> = ({
   return (
     <div className="min-h-screen bg-[#FFF5F8] text-[#2D2430]">
       {/* 3 Interactive Hero Banners Carousel / Tab Selector */}
-      <section className={`relative overflow-hidden pt-10 pb-14 sm:pt-16 sm:pb-20 border-b border-[#FFE4EC] bg-gradient-to-b ${currentBanner.bgGradient}`}>
+      <section className={`relative overflow-hidden pt-8 pb-10 sm:pt-16 sm:pb-20 border-b border-[#FFE4EC] bg-gradient-to-b ${currentBanner.bgGradient}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
           {/* Banner Tabs Selector */}
-          <div className="flex items-center justify-center gap-1 sm:gap-2 mb-6 overflow-x-auto pb-2">
+          <div className="flex items-center justify-center gap-1 sm:gap-2 mb-5 sm:mb-6 overflow-x-auto pb-1 scrollbar-none">
             {heroBanners.map((b, idx) => (
               <button
                 key={b.id}
                 onClick={() => setActiveBannerIndex(idx)}
-                className={`px-3 py-1.5 rounded-[5px] text-[11px] sm:text-xs font-mono font-bold transition-all shrink-0 flex items-center gap-1.5 ${
+                className={`px-2.5 sm:px-3 py-1.5 rounded-[5px] text-[10px] sm:text-xs font-mono font-bold transition-all shrink-0 flex items-center gap-1 sm:gap-1.5 ${
                   activeBannerIndex === idx
                     ? 'bg-[#2D2430] text-white shadow-sm'
                     : 'bg-white/80 text-[#8A7F8E] hover:text-[#2D2430] border border-[#FFE4EC]'
                 }`}
               >
-                <span>{b.badge}</span>
+                <span className="sm:hidden">{b.badgeShort}</span>
+                <span className="hidden sm:inline">{b.badge}</span>
                 {activeBannerIndex === idx && (
                   <span className="h-1.5 w-1.5 rounded-full bg-[#E75480] inline-block" />
                 )}
@@ -179,28 +183,28 @@ export const HomePage: React.FC<HomePageProps> = ({
           </div>
 
           {/* Pill Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-[5px] bg-[#FFE4EC] border border-[#E75480]/30 text-[#C2185B] text-xs font-mono mb-5 shadow-xs">
-            <span className="relative flex h-2 w-2">
+          <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 rounded-[5px] bg-[#FFE4EC] border border-[#E75480]/30 text-[#C2185B] text-[10px] sm:text-xs font-mono mb-4 sm:mb-5 shadow-xs">
+            <span className="relative flex h-2 w-2 shrink-0">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#E75480] opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-[#E75480]"></span>
             </span>
-            <span className="font-bold">{currentBanner.badge}</span>
-            <span className="text-[#E75480]/40">•</span>
-            <span className="text-[#2D2430]">{currentBanner.accentTag}</span>
+            <span className="font-bold truncate max-w-[120px] sm:max-w-none">{currentBanner.badge}</span>
+            <span className="text-[#E75480]/40 hidden sm:inline">•</span>
+            <span className="text-[#2D2430] hidden sm:inline">{currentBanner.accentTag}</span>
           </div>
 
           {/* Heading */}
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-[#2D2430] tracking-tight max-w-4xl mx-auto leading-[1.1] mb-5 font-display">
+          <h1 className="text-2xl sm:text-5xl lg:text-6xl font-black text-[#2D2430] tracking-tight max-w-4xl mx-auto leading-[1.15] mb-4 sm:mb-5 font-display px-2">
             {currentBanner.title}
           </h1>
 
           {/* Subheading */}
-          <p className="text-sm sm:text-base lg:text-lg text-[#8A7F8E] max-w-2xl mx-auto leading-relaxed mb-8">
+          <p className="text-sm sm:text-base lg:text-lg text-[#8A7F8E] max-w-2xl mx-auto leading-relaxed mb-6 sm:mb-8 px-1">
             {currentBanner.subtitle}
           </p>
 
           {/* CTAs */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-10">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 mb-8 sm:mb-10 px-0">
             <a
               href="#products-section"
               onClick={() => {
@@ -208,7 +212,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                   setActiveCategory(currentBanner.categoryTarget);
                 }
               }}
-              className="w-full sm:w-auto bg-[#E75480] hover:bg-[#C2185B] text-white font-bold text-sm sm:text-base py-3.5 px-8 rounded-[5px] shadow-sm transition-all flex items-center justify-center gap-2 active:scale-95 font-mono"
+              className="w-full sm:w-auto bg-[#E75480] hover:bg-[#C2185B] text-white font-bold text-sm py-3.5 px-6 sm:px-8 rounded-[5px] shadow-sm transition-all flex items-center justify-center gap-2 active:scale-95 font-mono"
             >
               <ShoppingBag className="w-5 h-5" />
               <span>{currentBanner.ctaText}</span>
@@ -217,7 +221,7 @@ export const HomePage: React.FC<HomePageProps> = ({
 
             <button
               onClick={onOpenPipelineModal}
-              className="w-full sm:w-auto bg-white hover:bg-[#FFE4EC]/50 text-[#C2185B] font-bold text-xs sm:text-sm py-3.5 px-6 rounded-[5px] border border-[#E75480]/30 transition-all flex items-center justify-center gap-2 font-mono"
+              className="w-full sm:w-auto bg-white hover:bg-[#FFE4EC]/50 text-[#C2185B] font-bold text-xs sm:text-sm py-3.5 px-5 sm:px-6 rounded-[5px] border border-[#E75480]/30 transition-all flex items-center justify-center gap-2 font-mono"
             >
               <Sparkles className="w-4 h-4 text-[#E75480]" />
               <span>AI CONTENT ENGINE</span>
@@ -225,37 +229,37 @@ export const HomePage: React.FC<HomePageProps> = ({
           </div>
 
           {/* 4 Trust stats for Fashion Store */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-4xl mx-auto pt-6 border-t border-[#FFE4EC] text-left">
-            <div className="bg-white border border-[#FFE4EC] rounded-[5px] p-4 shadow-xs">
-              <div className="flex items-center gap-1.5 text-[#C2185B] font-mono font-bold text-base sm:text-lg">
-                <Truck className="w-4 h-4 text-[#E75480]" />
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 max-w-4xl mx-auto pt-5 sm:pt-6 border-t border-[#FFE4EC] text-left">
+            <div className="bg-white border border-[#FFE4EC] rounded-[5px] p-3 sm:p-4 shadow-xs">
+              <div className="flex items-center gap-1 sm:gap-1.5 text-[#C2185B] font-mono font-bold text-sm sm:text-lg">
+                <Truck className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#E75480] shrink-0" />
                 <span>100% Free</span>
               </div>
-              <div className="text-xs text-[#8A7F8E] font-medium">Nationwide Delivery Across Nigeria</div>
+              <div className="text-[10px] sm:text-xs text-[#8A7F8E] font-medium mt-0.5">Nationwide Delivery Across Nigeria</div>
             </div>
 
-            <div className="bg-white border border-[#FFE4EC] rounded-[5px] p-4 shadow-xs">
-              <div className="flex items-center gap-1.5 text-[#D4A373] font-mono font-bold text-base sm:text-lg">
-                <ShieldCheck className="w-4 h-4 text-[#D4A373]" />
+            <div className="bg-white border border-[#FFE4EC] rounded-[5px] p-3 sm:p-4 shadow-xs">
+              <div className="flex items-center gap-1 sm:gap-1.5 text-[#D4A373] font-mono font-bold text-sm sm:text-lg">
+                <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#D4A373] shrink-0" />
                 <span>Pay on Delivery</span>
               </div>
-              <div className="text-xs text-[#8A7F8E] font-medium">Inspect Before You Pay</div>
+              <div className="text-[10px] sm:text-xs text-[#8A7F8E] font-medium mt-0.5">Inspect Before You Pay</div>
             </div>
 
-            <div className="bg-white border border-[#FFE4EC] rounded-[5px] p-4 shadow-xs">
-              <div className="flex items-center gap-1.5 text-[#C2185B] font-mono font-bold text-base sm:text-lg">
-                <Ruler className="w-4 h-4 text-[#E75480]" />
+            <div className="bg-white border border-[#FFE4EC] rounded-[5px] p-3 sm:p-4 shadow-xs">
+              <div className="flex items-center gap-1 sm:gap-1.5 text-[#C2185B] font-mono font-bold text-sm sm:text-lg">
+                <Ruler className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#E75480] shrink-0" />
                 <span>UK 6 to 20</span>
               </div>
-              <div className="text-xs text-[#8A7F8E] font-medium">Designed for Nigerian Curves</div>
+              <div className="text-[10px] sm:text-xs text-[#8A7F8E] font-medium mt-0.5">Designed for Nigerian Curves</div>
             </div>
 
-            <div className="bg-white border border-[#FFE4EC] rounded-[5px] p-4 shadow-xs">
-              <div className="flex items-center gap-1.5 text-[#D4A373] font-mono font-bold text-base sm:text-lg">
-                <CheckCircle2 className="w-4 h-4 text-[#D4A373]" />
-                <span>7-Day Sizing Guarantee</span>
+            <div className="bg-white border border-[#FFE4EC] rounded-[5px] p-3 sm:p-4 shadow-xs">
+              <div className="flex items-center gap-1 sm:gap-1.5 text-[#D4A373] font-mono font-bold text-sm sm:text-lg">
+                <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#D4A373] shrink-0" />
+                <span className="leading-tight">7-Day Sizing</span>
               </div>
-              <div className="text-xs text-[#8A7F8E] font-medium">Hassle-Free Sizing Exchange</div>
+              <div className="text-[10px] sm:text-xs text-[#8A7F8E] font-medium mt-0.5">Hassle-Free Sizing Exchange</div>
             </div>
           </div>
         </div>
