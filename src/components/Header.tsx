@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   ShoppingBag,
   Menu,
@@ -7,18 +7,20 @@ import {
   CheckCircle,
   ChevronDown,
   Sparkles,
-  Layers,
   Heart,
+  Search,
 } from 'lucide-react';
-import { CATEGORIES, getProductImageUrl, deduplicateProducts } from '../data/products';
+import { CATEGORIES } from '../data/products';
 import { MegaprimeLogo } from './MegaprimeLogo';
 import { Product } from '../types';
+import { getWishlist } from '../services/wishlistService';
 
 interface HeaderProps {
   currentPath: string;
   navigate: (path: string) => void;
   products: Product[];
   onOpenPipelineModal: () => void;
+  onOpenWishlist?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -26,10 +28,21 @@ export const Header: React.FC<HeaderProps> = ({
   navigate,
   products,
   onOpenPipelineModal,
+  onOpenWishlist,
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [productsDropdownOpen, setProductsDropdownOpen] = useState(false);
   const [mobileCollectionsOpen, setMobileCollectionsOpen] = useState(false);
+  const [wishlistCount, setWishlistCount] = useState(0);
+
+  useEffect(() => {
+    setWishlistCount(getWishlist().length);
+    const handleWishlistChange = () => {
+      setWishlistCount(getWishlist().length);
+    };
+    window.addEventListener('megaprime_wishlist_updated', handleWishlistChange);
+    return () => window.removeEventListener('megaprime_wishlist_updated', handleWishlistChange);
+  }, []);
 
   const activeCategoryFromPath = React.useMemo(() => {
     if (!currentPath.includes('/products')) return '';
@@ -45,8 +58,8 @@ export const Header: React.FC<HeaderProps> = ({
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-[#FFE4EC]">
-      {/* Top announcement bar */}
+    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-[#FFE4EC] transition-all">
+      {/* Top Announcement Bar */}
       <div className="bg-[#2D2430] text-white text-[11px] sm:text-xs py-2 px-3 sm:px-4 border-b border-[#3D3242]">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-2">
           <div className="flex items-center gap-1.5 sm:gap-2 overflow-hidden min-w-0">
@@ -64,25 +77,25 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
 
           <div className="hidden sm:flex items-center gap-4 shrink-0 text-[#8A7F8E]">
-            <span className="flex items-center gap-1.5 text-white/90 font-mono">
+            <span className="flex items-center gap-1.5 text-white/90 font-mono text-[11px]">
               <CheckCircle className="w-3.5 h-3.5 text-[#D4A373]" />
               <span>Zero Account Required</span>
             </span>
             <span className="text-[#4A3D50]">|</span>
             <button
               onClick={() => handleNav('/contact')}
-              className="hover:text-[#E75480] transition-colors flex items-center gap-1 text-white/90 font-mono"
+              className="hover:text-[#E75480] transition-colors flex items-center gap-1 text-white/90 font-mono text-[11px]"
             >
               <PhoneCall className="w-3.5 h-3.5 text-[#D4A373]" />
               <span>Fashion Support Desk</span>
             </button>
             <span className="text-[#4A3D50]">|</span>
-            <span className="text-[#D4A373] font-bold font-mono">🇳🇬 NGN (₦)</span>
+            <span className="text-[#D4A373] font-bold font-mono text-[11px]">🇳🇬 NGN (₦)</span>
           </div>
         </div>
       </div>
 
-      {/* Main navigation header */}
+      {/* Main Navigation Bar */}
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-14 sm:h-20 gap-2">
           {/* Logo */}
@@ -97,7 +110,7 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
           </div>
 
-          {/* Desktop Links */}
+          {/* Desktop Navigation Links */}
           <nav className="hidden md:flex items-center gap-1 lg:gap-2">
             <button
               onClick={() => handleNav('/')}
@@ -111,7 +124,7 @@ export const Header: React.FC<HeaderProps> = ({
               Home
             </button>
 
-            {/* Products Dropdown */}
+            {/* Collections Dropdown */}
             <div
               className="relative"
               onMouseEnter={() => setProductsDropdownOpen(true)}
@@ -129,7 +142,7 @@ export const Header: React.FC<HeaderProps> = ({
                 aria-expanded={productsDropdownOpen}
               >
                 <span>Collections</span>
-                <ChevronDown className={`w-3.5 h-3.5 transition-transform ${productsDropdownOpen ? 'rotate-180' : ''}`} />
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${productsDropdownOpen ? 'rotate-180 text-[#C2185B]' : ''}`} />
               </button>
 
               {productsDropdownOpen && (
@@ -148,6 +161,7 @@ export const Header: React.FC<HeaderProps> = ({
                   <div className="max-h-80 overflow-y-auto divide-y divide-[#FFE4EC]/50">
                     {CATEGORIES.filter((c) => c !== 'All Products').map((cat) => {
                       const isSelected = activeCategoryFromPath === cat;
+                      const count = products.filter((p) => p.category === cat).length;
                       return (
                         <button
                           key={cat}
@@ -167,9 +181,9 @@ export const Header: React.FC<HeaderProps> = ({
                           >
                             {cat}
                           </span>
-                          {isSelected && (
-                            <span className="w-2 h-2 rounded-full bg-[#E75480]" />
-                          )}
+                          <span className="text-[10px] font-mono text-[#8A7F8E] bg-[#FFF5F8] px-1.5 py-0.5 rounded-[5px] border border-[#FFE4EC]">
+                            {count}
+                          </span>
                         </button>
                       );
                     })}
@@ -209,21 +223,39 @@ export const Header: React.FC<HeaderProps> = ({
           </nav>
 
           {/* Right Action Buttons */}
-          <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
-            {/* AI Content Pipeline Admin Button — hidden on mobile (accessible via mobile drawer) */}
+          <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
+            {/* Wishlist / Saved Looks Button (Template-style) */}
+            {onOpenWishlist && (
+              <button
+                onClick={onOpenWishlist}
+                className="relative p-2 sm:px-3 sm:py-2 text-[#2D2430] hover:text-[#C2185B] hover:bg-[#FFE4EC]/60 rounded-[5px] transition-colors flex items-center gap-1.5 border border-[#FFE4EC]"
+                title="View your saved looks"
+                aria-label="Saved looks wishlist"
+              >
+                <Heart className={`w-4 h-4 ${wishlistCount > 0 ? 'fill-[#E75480] text-[#E75480]' : 'text-[#2D2430]'}`} />
+                <span className="hidden sm:inline text-xs font-mono font-bold">Saved</span>
+                {wishlistCount > 0 && (
+                  <span className="w-4 h-4 rounded-full bg-[#E75480] text-white text-[10px] font-mono font-bold flex items-center justify-center">
+                    {wishlistCount}
+                  </span>
+                )}
+              </button>
+            )}
+
+            {/* AI Content Pipeline Admin Button */}
             <button
               onClick={onOpenPipelineModal}
               title="Regenerate fashion copy and images via Gemini & Unsplash"
-              className="hidden sm:inline-flex items-center gap-1.5 bg-[#FFF5F8] hover:bg-[#FFE4EC] text-[#C2185B] border border-[#E75480]/40 text-xs font-mono font-bold px-3 py-2 rounded-[5px] transition-all shadow-xs"
+              className="hidden lg:inline-flex items-center gap-1.5 bg-[#FFF5F8] hover:bg-[#FFE4EC] text-[#C2185B] border border-[#E75480]/40 text-xs font-mono font-bold px-3 py-2 rounded-[5px] transition-all shadow-xs"
             >
               <Sparkles className="w-3.5 h-3.5 text-[#E75480] animate-pulse" />
-              <span className="hidden lg:inline">AI Pipeline</span>
+              <span>AI Pipeline</span>
             </button>
 
             {/* View Catalog CTA */}
             <button
               onClick={() => handleNav('/products')}
-              className="inline-flex items-center gap-1.5 sm:gap-2 bg-[#E75480] hover:bg-[#C2185B] text-white text-[11px] sm:text-sm font-bold px-3 py-2 sm:px-5 sm:py-2.5 rounded-[5px] transition-all shadow-xs active:scale-95 whitespace-nowrap"
+              className="inline-flex items-center gap-1.5 sm:gap-2 bg-[#E75480] hover:bg-[#C2185B] text-white text-[11px] sm:text-xs lg:text-sm font-bold px-3 py-2 sm:px-4 sm:py-2.5 rounded-[5px] transition-all shadow-xs active:scale-95 whitespace-nowrap font-mono"
             >
               <ShoppingBag className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               <span className="hidden sm:inline">SHOP 40 LOOKS</span>
@@ -252,6 +284,7 @@ export const Header: React.FC<HeaderProps> = ({
             >
               Home
             </button>
+
             {/* Mobile Collections Dropdown */}
             <div className="border border-[#FFE4EC] rounded-[5px] overflow-hidden">
               <button
@@ -295,24 +328,47 @@ export const Header: React.FC<HeaderProps> = ({
                 </div>
               )}
             </div>
+
             <button
               onClick={() => handleNav('/#how-it-works')}
               className="w-full text-left px-3 py-2.5 rounded-[5px] text-sm font-semibold text-[#2D2430] hover:bg-[#FFF5F8]"
             >
               Pay on Delivery Details
             </button>
+
             <button
               onClick={() => handleNav('/faq')}
               className="w-full text-left px-3 py-2.5 rounded-[5px] text-sm font-semibold text-[#2D2430] hover:bg-[#FFF5F8]"
             >
               Sizing Guide &amp; FAQs
             </button>
+
             <button
               onClick={() => handleNav('/contact')}
               className="w-full text-left px-3 py-2.5 rounded-[5px] text-sm font-semibold text-[#2D2430] hover:bg-[#FFF5F8]"
             >
               Customer Support Desk
             </button>
+
+            {onOpenWishlist && (
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  onOpenWishlist();
+                }}
+                className="w-full text-left px-3 py-2.5 rounded-[5px] text-sm font-semibold text-[#C2185B] hover:bg-[#FFE4EC] flex items-center justify-between"
+              >
+                <div className="flex items-center gap-2">
+                  <Heart className="w-4 h-4 fill-[#E75480] text-[#E75480]" />
+                  <span>Saved Looks</span>
+                </div>
+                {wishlistCount > 0 && (
+                  <span className="w-5 h-5 rounded-full bg-[#E75480] text-white text-xs font-mono font-bold flex items-center justify-center">
+                    {wishlistCount}
+                  </span>
+                )}
+              </button>
+            )}
           </div>
 
           <div className="pt-3 border-t border-[#FFE4EC] space-y-2">

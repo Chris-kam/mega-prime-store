@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Search, Sparkles, ShoppingBag } from 'lucide-react';
+import { Search, Sparkles, ShoppingBag, X, ChevronRight, Home, SlidersHorizontal } from 'lucide-react';
 import { CATEGORIES, deduplicateProducts } from '../data/products';
 import { ProductCard } from '../components/ProductCard';
 import { Pagination, PRODUCTS_PER_PAGE } from '../components/Pagination';
 import { ProductCardSkeleton } from '../components/ProductCardSkeleton';
+import { QuickViewModal } from '../components/QuickViewModal';
 import { Product } from '../types';
 
 interface ProductsPageProps {
@@ -55,11 +56,12 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState<'featured' | 'price-low' | 'price-high' | 'rating'>('featured');
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
 
   // Ref to the top of the products section for smooth scrolling
   const productsGridRef = useRef<HTMLDivElement>(null);
 
-  // Sync state whenever currentPath prop updates (e.g., when clicking collections dropdown item)
+  // Sync state whenever currentPath prop updates
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const searchPart = currentPath && currentPath.includes('?')
@@ -81,7 +83,6 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({
       setCurrentPage(1);
     }
 
-    // When navigating to a specific category, smoothly scroll to the products grid
     if (productsGridRef.current && cat) {
       const topOffset = productsGridRef.current.getBoundingClientRect().top + window.scrollY - 90;
       window.scrollTo({
@@ -144,7 +145,6 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({
   const totalItems = sortedProducts.length;
   const totalPages = Math.max(1, Math.ceil(totalItems / PRODUCTS_PER_PAGE));
 
-  // If filtered results decrease and current page is out of bounds, reset to page 1
   useEffect(() => {
     if (currentPage > totalPages && totalPages > 0) {
       setCurrentPage(1);
@@ -157,7 +157,6 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({
     }
   }, [totalPages, currentPage, selectedCategory, navigate]);
 
-  // Paginated slice for the current page
   const startIndex = (currentPage - 1) * PRODUCTS_PER_PAGE;
   const paginatedProducts = sortedProducts.slice(
     startIndex,
@@ -167,7 +166,6 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({
   const startItemNumber = totalItems === 0 ? 0 : startIndex + 1;
   const endItemNumber = Math.min(startIndex + PRODUCTS_PER_PAGE, totalItems);
 
-  // Handler for category filter change (resets to page 1)
   const handleCategorySelect = (cat: string) => {
     setSelectedCategory(cat);
     setCurrentPage(1);
@@ -175,19 +173,16 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({
     navigate(newPath);
   };
 
-  // Handler for search term change (resets to page 1)
   const handleSearchChange = (val: string) => {
     setSearchQuery(val);
     setCurrentPage(1);
   };
 
-  // Handler for sort change (resets to page 1)
   const handleSortChange = (val: 'featured' | 'price-low' | 'price-high' | 'rating') => {
     setSortBy(val);
     setCurrentPage(1);
   };
 
-  // Handler for pagination change (smoothly scrolls to top of product grid)
   const handlePageChange = (newPage: number) => {
     if (newPage === currentPage) return;
 
@@ -205,7 +200,6 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({
     const newPath = queryString ? `/products?${queryString}` : '/products';
     navigate(newPath);
 
-    // Smooth scroll back to top of the product grid
     if (productsGridRef.current) {
       const topOffset = productsGridRef.current.getBoundingClientRect().top + window.scrollY - 80;
       window.scrollTo({
@@ -220,22 +214,64 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-[#FFF5F8] text-[#2D2430] py-10 sm:py-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
+    <div className="min-h-screen bg-[#FFF5F8] text-[#2D2430] pb-16">
+      {/* Template-style Breadcrumb Bar */}
+      <div className="bg-white border-b border-[#FFE4EC] py-2.5">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <ul className="flex items-center gap-1.5 text-xs font-mono text-[#8A7F8E]">
+            <li>
+              <button
+                onClick={() => navigate('/')}
+                className="hover:text-[#C2185B] flex items-center gap-1 transition-colors"
+              >
+                <Home className="w-3.5 h-3.5" />
+                <span>Home</span>
+              </button>
+            </li>
+            <li>
+              <ChevronRight className="w-3.5 h-3.5 text-gray-300" />
+            </li>
+            <li>
+              <button
+                onClick={() => handleCategorySelect('All Products')}
+                className={`transition-colors ${
+                  selectedCategory === 'All Products'
+                    ? 'font-bold text-[#2D2430]'
+                    : 'hover:text-[#C2185B]'
+                }`}
+              >
+                Shop Collections
+              </button>
+            </li>
+            {selectedCategory !== 'All Products' && (
+              <>
+                <li>
+                  <ChevronRight className="w-3.5 h-3.5 text-gray-300" />
+                </li>
+                <li className="font-bold text-[#C2185B] truncate max-w-xs">
+                  {selectedCategory}
+                </li>
+              </>
+            )}
+          </ul>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-12">
+        {/* Header Section */}
         <div className="text-center max-w-3xl mx-auto mb-10">
-          <div className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-[#C2185B] uppercase tracking-wider mb-3 bg-[#FFE4EC] border border-[#E75480]/30 px-3 py-1 rounded-[5px]">
+          <div className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-[#C2185B] uppercase tracking-wider mb-3 bg-[#FFE4EC] border border-[#E75480]/30 px-3 py-1 rounded-[5px] shadow-xs">
             <Sparkles className="w-3.5 h-3.5 text-[#E75480]" />
             <span>
               {selectedCategory === 'All Products'
-                ? `Blush & Bloom Catalog (${uniqueProducts.length} Designs)`
+                ? `Blush & Bloom Edit (${uniqueProducts.length} Designs)`
                 : `Category: ${selectedCategory} (${filteredProducts.length} ${filteredProducts.length === 1 ? 'Design' : 'Designs'})`}
             </span>
           </div>
           <h1 className="text-3xl sm:text-5xl font-black text-[#2D2430] tracking-tight font-display">
             {selectedCategory === 'All Products' ? 'The Complete Fashion Edit' : `${selectedCategory} Collection`}
           </h1>
-          <p className="text-sm sm:text-base text-[#8A7F8E] mt-2">
+          <p className="text-sm sm:text-base text-[#8A7F8E] mt-2 leading-relaxed">
             {selectedCategory === 'All Products'
               ? 'Liquid satins, authentic Ankara prints, tailored crepe, and fine accessories with 100% free nationwide delivery and pay on delivery.'
               : `Explore handcrafted ${selectedCategory.toLowerCase()} curated for elegance, premium fit, and nationwide pay on delivery across Nigeria.`}
@@ -256,13 +292,25 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({
                 placeholder="Search dresses, Ankara prints, fabrics, bags..."
                 value={searchQuery}
                 onChange={(e) => handleSearchChange(e.target.value)}
-                className="w-full bg-[#FFF5F8] border border-[#FFE4EC] focus:border-[#E75480] focus:bg-white focus:ring-2 focus:ring-[#E75480]/20 text-[#2D2430] rounded-[5px] pl-10 pr-4 py-2.5 text-xs sm:text-sm placeholder:text-[#8A7F8E]/60 transition-colors"
+                className="w-full bg-[#FFF5F8] border border-[#FFE4EC] focus:border-[#E75480] focus:bg-white focus:ring-2 focus:ring-[#E75480]/20 text-[#2D2430] rounded-[5px] pl-10 pr-9 py-2.5 text-xs sm:text-sm placeholder:text-[#8A7F8E]/60 transition-colors"
               />
+              {searchQuery && (
+                <button
+                  onClick={() => handleSearchChange('')}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8A7F8E] hover:text-[#2D2430] p-0.5"
+                  aria-label="Clear search"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              )}
             </div>
 
             {/* Sort Selector & Admin Pipeline button */}
             <div className="flex items-center gap-2 w-full sm:w-auto justify-end text-xs font-mono">
-              <span className="text-[#8A7F8E]">Sort:</span>
+              <span className="text-[#8A7F8E] flex items-center gap-1">
+                <SlidersHorizontal className="w-3.5 h-3.5" />
+                <span>Sort:</span>
+              </span>
               <select
                 value={sortBy}
                 onChange={(e: any) => handleSortChange(e.target.value)}
@@ -285,7 +333,7 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({
             </div>
           </div>
 
-          {/* 11 Categories Filter */}
+          {/* 11 Categories Filter Tabs */}
           <div className="flex items-center gap-2 overflow-x-auto pb-1 text-xs font-mono scrollbar-none pt-2 border-t border-[#FFE4EC]">
             {CATEGORIES.map((cat) => {
               const isActive = selectedCategory === cat;
@@ -298,7 +346,7 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({
                 <button
                   key={cat}
                   onClick={() => handleCategorySelect(cat)}
-                  className={`px-3 py-1.5 rounded-[5px] transition-all whitespace-nowrap shrink-0 flex items-center gap-1.5 ${
+                  className={`px-3 py-1.5 rounded-[5px] whitespace-nowrap transition-all shrink-0 flex items-center gap-1.5 ${
                     isActive
                       ? 'bg-[#C2185B] text-white font-bold shadow-xs'
                       : 'bg-[#FFF5F8] hover:bg-[#FFE4EC] text-[#2D2430] border border-[#FFE4EC]'
@@ -306,7 +354,7 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({
                 >
                   <span>{cat}</span>
                   <span
-                    className={`text-[10px] px-1 rounded-full ${
+                    className={`text-[10px] px-1.5 py-0.2 rounded-full ${
                       isActive ? 'bg-white text-[#C2185B]' : 'bg-[#FFE4EC] text-[#8A7F8E]'
                     }`}
                   >
@@ -318,92 +366,94 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({
           </div>
         </div>
 
-        {/* Results Count & Summary Banner above grid */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between text-xs font-mono text-[#8A7F8E] mb-6 px-1 gap-2">
-          <div className="flex items-center flex-wrap gap-2">
-            <span>
-              Showing <strong className="text-[#2D2430]">{startItemNumber} to {endItemNumber}</strong> of{' '}
-              <strong className="text-[#2D2430]">{totalItems}</strong> products in{' '}
-              <strong className="text-[#C2185B]">{selectedCategory}</strong>
-              {totalPages > 1 && (
-                <span className="ml-2 text-[#8A7F8E] font-medium">
-                  (Page {currentPage} of {totalPages})
-                </span>
-              )}
-            </span>
-            {selectedCategory !== 'All Products' && (
-              <button
-                onClick={() => handleCategorySelect('All Products')}
-                className="inline-flex items-center gap-1 text-[11px] bg-[#FFE4EC] hover:bg-[#E75480] hover:text-white text-[#C2185B] font-bold px-2 py-0.5 rounded-[5px] transition-colors"
-                title="Show all fashion categories"
-              >
-                <span>Clear filter ✕</span>
-              </button>
-            )}
+        {/* Results summary line */}
+        <div className="flex items-center justify-between gap-4 mb-6 text-xs font-mono text-[#8A7F8E]">
+          <div>
+            <span>Showing </span>
+            <strong className="text-[#2D2430]">
+              {startItemNumber}–{endItemNumber}
+            </strong>{' '}
+            <span>of </span>
+            <strong className="text-[#2D2430]">{totalItems}</strong> styles
           </div>
           {searchQuery && (
             <button
               onClick={() => handleSearchChange('')}
-              className="text-[#C2185B] hover:underline self-start sm:self-auto"
+              className="text-[#C2185B] hover:underline flex items-center gap-1"
             >
-              Clear search "{searchQuery}"
+              <span>Clear "{searchQuery}"</span>
+              <X className="w-3 h-3" />
             </button>
           )}
         </div>
 
-        {/* Product Grid with Smooth Transition & Skeleton State */}
-        {totalItems > 0 ? (
-          <div>
-            <div
-              className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 transition-opacity duration-200 ${
-                isTransitioning ? 'opacity-40 pointer-events-none' : 'opacity-100'
-              }`}
-            >
-              {isTransitioning
-                ? Array.from({ length: Math.min(12, paginatedProducts.length || 12) }).map(
-                    (_, idx) => <ProductCardSkeleton key={`skeleton-${idx}`} />
-                  )
-                : paginatedProducts.map((product) => (
-                    <ProductCard
-                      key={product.id}
-                      product={product}
-                      onSelect={(slug) => onSelectProduct(slug)}
-                    />
-                  ))}
-            </div>
-
-            {/* Pagination Component Centered Below Grid */}
-            <Pagination
-              currentPage={currentPage}
-              totalItems={totalItems}
-              pageSize={PRODUCTS_PER_PAGE}
-              onPageChange={handlePageChange}
-              showSummary={true}
-            />
-          </div>
-        ) : (
-          <div className="text-center py-20 bg-white border border-[#FFE4EC] rounded-[5px] p-8">
-            <ShoppingBag className="w-12 h-12 text-[#E75480] mx-auto mb-3 opacity-60" />
-            <h3 className="text-lg font-bold text-[#2D2430] font-display">
-              No matching fashion items found
-            </h3>
-            <p className="text-xs text-[#8A7F8E] mt-1 mb-5">
-              We couldn’t find anything matching "{searchQuery}". Try browsing by category or clear your search term.
-            </p>
-            <div className="flex justify-center gap-3">
-              <button
-                onClick={() => {
-                  setSearchQuery('');
-                  handleCategorySelect('All Products');
-                }}
-                className="bg-[#E75480] hover:bg-[#C2185B] text-white text-xs font-mono font-bold px-4 py-2.5 rounded-[5px]"
+        {/* Products Grid */}
+        <div>
+          {totalItems > 0 ? (
+            <div>
+              <div
+                className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 transition-opacity duration-200 ${
+                  isTransitioning ? 'opacity-40 pointer-events-none' : 'opacity-100'
+                }`}
               >
-                Reset All Filters
-              </button>
+                {isTransitioning
+                  ? Array.from({ length: Math.min(12, paginatedProducts.length || 12) }).map(
+                      (_, idx) => <ProductCardSkeleton key={`skeleton-${idx}`} />
+                    )
+                  : paginatedProducts.map((product) => (
+                      <ProductCard
+                        key={product.id}
+                        product={product}
+                        onSelect={(slug) => onSelectProduct(slug)}
+                        onQuickView={(p) => setQuickViewProduct(p)}
+                      />
+                    ))}
+              </div>
+
+              {/* Centered Pagination Bar below Grid */}
+              <Pagination
+                currentPage={currentPage}
+                totalItems={totalItems}
+                pageSize={PRODUCTS_PER_PAGE}
+                onPageChange={handlePageChange}
+                showSummary={true}
+              />
             </div>
-          </div>
-        )}
+          ) : (
+            <div className="text-center py-20 bg-white border border-[#FFE4EC] rounded-[5px] p-8">
+              <ShoppingBag className="w-12 h-12 text-[#E75480] mx-auto mb-3 opacity-60" />
+              <h3 className="text-lg font-bold text-[#2D2430] font-display">
+                No matching fashion pieces found
+              </h3>
+              <p className="text-xs text-[#8A7F8E] mt-1 mb-5">
+                We couldn't find any designs matching "{searchQuery}". Try searching for dresses, satin, Ankara, or bags.
+              </p>
+              <div className="flex items-center justify-center gap-3">
+                <button
+                  onClick={() => {
+                    setSearchQuery('');
+                    handleCategorySelect('All Products');
+                  }}
+                  className="bg-[#E75480] hover:bg-[#C2185B] text-white text-xs font-mono font-bold px-4 py-2.5 rounded-[5px] transition-colors"
+                >
+                  View All 40 Designs
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
+
+      {/* Quick View Modal */}
+      <QuickViewModal
+        product={quickViewProduct}
+        isOpen={!!quickViewProduct}
+        onClose={() => setQuickViewProduct(null)}
+        onSelectFullDetail={(slug) => {
+          setQuickViewProduct(null);
+          onSelectProduct(slug);
+        }}
+      />
     </div>
   );
 };

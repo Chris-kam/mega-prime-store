@@ -7,8 +7,20 @@ interface TermsPageProps {
 
 export const TermsPage: React.FC<TermsPageProps> = ({ navigate }) => {
   return (
-    <div className="min-h-screen bg-[#FFF5F8] text-[#2D2430] py-10 sm:py-16">
+    <div className="min-h-screen bg-[#FFF5F8] text-[#2D2430] py-8 sm:py-16">
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
+        {/* Template Breadcrumb */}
+        <nav className="flex items-center gap-2 text-xs font-mono text-[#8A7F8E] mb-6">
+          <button
+            onClick={() => navigate('/')}
+            className="hover:text-[#C2185B] transition-colors"
+          >
+            Home
+          </button>
+          <span>/</span>
+          <span className="text-[#C2185B] font-bold">Terms of Sale &amp; Guarantee</span>
+        </nav>
+
         {/* Header */}
         <div className="text-center mb-10">
           <div className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-[#C2185B] uppercase tracking-wider mb-2 bg-[#FFE4EC] border border-[#E75480]/30 px-3 py-1 rounded-[5px]">

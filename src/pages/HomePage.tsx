@@ -10,15 +10,17 @@ import {
   Truck,
   ShieldCheck,
   Flame,
-  Tag,
   Crown,
   Ruler,
+  HelpCircle,
 } from 'lucide-react';
 import { CATEGORIES, deduplicateProducts } from '../data/products';
 import { ProductCard } from '../components/ProductCard';
 import { Pagination, PRODUCTS_PER_PAGE } from '../components/Pagination';
 import { ProductCardSkeleton } from '../components/ProductCardSkeleton';
 import { CustomerReviewsSection } from '../components/CustomerReviewsSection';
+import { MarqueeTicker } from '../components/MarqueeTicker';
+import { QuickViewModal } from '../components/QuickViewModal';
 import { Product } from '../types';
 
 interface HomePageProps {
@@ -36,9 +38,10 @@ export const HomePage: React.FC<HomePageProps> = ({
 }) => {
   const [activeCategory, setActiveCategory] = useState('All Products');
   const [activeBannerIndex, setActiveBannerIndex] = useState(0);
-  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
+  const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
 
-  // 3 Hero Banners requested by the user
+  // 3 Hero Banners
   const heroBanners = [
     {
       id: 'new-season',
@@ -167,7 +170,7 @@ export const HomePage: React.FC<HomePageProps> = ({
               <button
                 key={b.id}
                 onClick={() => setActiveBannerIndex(idx)}
-                className={`px-2.5 sm:px-3 py-1.5 rounded-[5px] text-[10px] sm:text-xs font-mono font-bold transition-all shrink-0 flex items-center gap-1 sm:gap-1.5 ${
+                className={`px-3 py-1.5 rounded-[5px] text-[10px] sm:text-xs font-mono font-bold transition-all shrink-0 flex items-center gap-1.5 ${
                   activeBannerIndex === idx
                     ? 'bg-[#2D2430] text-white shadow-sm'
                     : 'bg-white/80 text-[#8A7F8E] hover:text-[#2D2430] border border-[#FFE4EC]'
@@ -183,18 +186,18 @@ export const HomePage: React.FC<HomePageProps> = ({
           </div>
 
           {/* Pill Badge */}
-          <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 rounded-[5px] bg-[#FFE4EC] border border-[#E75480]/30 text-[#C2185B] text-[10px] sm:text-xs font-mono mb-4 sm:mb-5 shadow-xs">
+          <div className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1.5 rounded-[5px] bg-[#FFE4EC] border border-[#E75480]/30 text-[#C2185B] text-[10px] sm:text-xs font-mono mb-4 sm:mb-5 shadow-xs">
             <span className="relative flex h-2 w-2 shrink-0">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#E75480] opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-[#E75480]"></span>
             </span>
-            <span className="font-bold truncate max-w-[120px] sm:max-w-none">{currentBanner.badge}</span>
+            <span className="font-bold">{currentBanner.badge}</span>
             <span className="text-[#E75480]/40 hidden sm:inline">•</span>
             <span className="text-[#2D2430] hidden sm:inline">{currentBanner.accentTag}</span>
           </div>
 
           {/* Heading */}
-          <h1 className="text-2xl sm:text-5xl lg:text-6xl font-black text-[#2D2430] tracking-tight max-w-4xl mx-auto leading-[1.15] mb-4 sm:mb-5 font-display px-2">
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-[#2D2430] tracking-tight max-w-4xl mx-auto leading-[1.12] mb-4 sm:mb-5 font-display px-2">
             {currentBanner.title}
           </h1>
 
@@ -212,16 +215,16 @@ export const HomePage: React.FC<HomePageProps> = ({
                   setActiveCategory(currentBanner.categoryTarget);
                 }
               }}
-              className="w-full sm:w-auto bg-[#E75480] hover:bg-[#C2185B] text-white font-bold text-sm py-3.5 px-6 sm:px-8 rounded-[5px] shadow-sm transition-all flex items-center justify-center gap-2 active:scale-95 font-mono"
+              className="w-full sm:w-auto bg-[#E75480] hover:bg-[#C2185B] text-white font-bold text-xs sm:text-sm py-3.5 px-6 sm:px-8 rounded-[5px] shadow-sm transition-all flex items-center justify-center gap-2 active:scale-95 font-mono"
             >
-              <ShoppingBag className="w-5 h-5" />
+              <ShoppingBag className="w-4 h-4 sm:w-5 sm:h-5" />
               <span>{currentBanner.ctaText}</span>
               <ArrowRight className="w-4 h-4" />
             </a>
 
             <button
               onClick={onOpenPipelineModal}
-              className="w-full sm:w-auto bg-white hover:bg-[#FFE4EC]/50 text-[#C2185B] font-bold text-xs sm:text-sm py-3.5 px-5 sm:px-6 rounded-[5px] border border-[#E75480]/30 transition-all flex items-center justify-center gap-2 font-mono"
+              className="w-full sm:w-auto bg-white hover:bg-[#FFE4EC]/50 text-[#C2185B] font-bold text-xs sm:text-sm py-3.5 px-5 sm:px-6 rounded-[5px] border border-[#E75480]/30 transition-all flex items-center justify-center gap-2 font-mono shadow-xs"
             >
               <Sparkles className="w-4 h-4 text-[#E75480]" />
               <span>AI CONTENT ENGINE</span>
@@ -229,41 +232,44 @@ export const HomePage: React.FC<HomePageProps> = ({
           </div>
 
           {/* 4 Trust stats for Fashion Store */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 max-w-4xl mx-auto pt-5 sm:pt-6 border-t border-[#FFE4EC] text-left">
-            <div className="bg-white border border-[#FFE4EC] rounded-[5px] p-3 sm:p-4 shadow-xs">
-              <div className="flex items-center gap-1 sm:gap-1.5 text-[#C2185B] font-mono font-bold text-sm sm:text-lg">
-                <Truck className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#E75480] shrink-0" />
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3.5 max-w-4xl mx-auto pt-5 sm:pt-6 border-t border-[#FFE4EC] text-left">
+            <div className="bg-white border border-[#FFE4EC] rounded-[5px] p-3.5 sm:p-4 shadow-xs card-hover-effect">
+              <div className="flex items-center gap-1.5 text-[#C2185B] font-mono font-bold text-sm sm:text-base">
+                <Truck className="w-4 h-4 text-[#E75480] shrink-0" />
                 <span>100% Free</span>
               </div>
               <div className="text-[10px] sm:text-xs text-[#8A7F8E] font-medium mt-0.5">Nationwide Delivery Across Nigeria</div>
             </div>
 
-            <div className="bg-white border border-[#FFE4EC] rounded-[5px] p-3 sm:p-4 shadow-xs">
-              <div className="flex items-center gap-1 sm:gap-1.5 text-[#D4A373] font-mono font-bold text-sm sm:text-lg">
-                <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#D4A373] shrink-0" />
+            <div className="bg-white border border-[#FFE4EC] rounded-[5px] p-3.5 sm:p-4 shadow-xs card-hover-effect">
+              <div className="flex items-center gap-1.5 text-[#D4A373] font-mono font-bold text-sm sm:text-base">
+                <ShieldCheck className="w-4 h-4 text-[#D4A373] shrink-0" />
                 <span>Pay on Delivery</span>
               </div>
               <div className="text-[10px] sm:text-xs text-[#8A7F8E] font-medium mt-0.5">Inspect Before You Pay</div>
             </div>
 
-            <div className="bg-white border border-[#FFE4EC] rounded-[5px] p-3 sm:p-4 shadow-xs">
-              <div className="flex items-center gap-1 sm:gap-1.5 text-[#C2185B] font-mono font-bold text-sm sm:text-lg">
-                <Ruler className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#E75480] shrink-0" />
+            <div className="bg-white border border-[#FFE4EC] rounded-[5px] p-3.5 sm:p-4 shadow-xs card-hover-effect">
+              <div className="flex items-center gap-1.5 text-[#C2185B] font-mono font-bold text-sm sm:text-base">
+                <Ruler className="w-4 h-4 text-[#E75480] shrink-0" />
                 <span>UK 6 to 20</span>
               </div>
               <div className="text-[10px] sm:text-xs text-[#8A7F8E] font-medium mt-0.5">Designed for Nigerian Curves</div>
             </div>
 
-            <div className="bg-white border border-[#FFE4EC] rounded-[5px] p-3 sm:p-4 shadow-xs">
-              <div className="flex items-center gap-1 sm:gap-1.5 text-[#D4A373] font-mono font-bold text-sm sm:text-lg">
-                <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#D4A373] shrink-0" />
-                <span className="leading-tight">7-Day Sizing</span>
+            <div className="bg-white border border-[#FFE4EC] rounded-[5px] p-3.5 sm:p-4 shadow-xs card-hover-effect">
+              <div className="flex items-center gap-1.5 text-[#D4A373] font-mono font-bold text-sm sm:text-base">
+                <CheckCircle2 className="w-4 h-4 text-[#D4A373] shrink-0" />
+                <span>7-Day Sizing</span>
               </div>
               <div className="text-[10px] sm:text-xs text-[#8A7F8E] font-medium mt-0.5">Hassle-Free Sizing Exchange</div>
             </div>
           </div>
         </div>
       </section>
+
+      {/* Template Continuous Marquee Ticker */}
+      <MarqueeTicker />
 
       {/* Main Catalog Section */}
       <section id="products-section" className="py-12 sm:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -283,7 +289,7 @@ export const HomePage: React.FC<HomePageProps> = ({
 
           <div className="flex items-center gap-2 text-xs font-mono text-[#8A7F8E]">
             <span>Showing:</span>
-            <span className="font-bold text-[#2D2430] bg-white border border-[#FFE4EC] px-2.5 py-1 rounded-[5px]">
+            <span className="font-bold text-[#2D2430] bg-white border border-[#FFE4EC] px-2.5 py-1 rounded-[5px] shadow-xs">
               {startHomeItem} to {endHomeItem} of {totalHomeItems} Styles
             </span>
           </div>
@@ -339,6 +345,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                         key={product.id}
                         product={product}
                         onSelect={(slug) => onSelectProduct(slug)}
+                        onQuickView={(p) => setQuickViewProduct(p)}
                       />
                     ))}
               </div>
@@ -399,11 +406,11 @@ export const HomePage: React.FC<HomePageProps> = ({
               </p>
 
               <div className="grid grid-cols-2 gap-4 pt-2">
-                <div className="border border-[#FFE4EC] p-3 rounded-[5px] bg-[#FFF5F8]">
+                <div className="border border-[#FFE4EC] p-3 rounded-[5px] bg-[#FFF5F8] card-hover-effect">
                   <div className="font-mono font-bold text-[#C2185B] text-sm">Zero Account Hassle</div>
                   <div className="text-xs text-[#8A7F8E]">Order directly in under 60 seconds</div>
                 </div>
-                <div className="border border-[#FFE4EC] p-3 rounded-[5px] bg-[#FFF5F8]">
+                <div className="border border-[#FFE4EC] p-3 rounded-[5px] bg-[#FFF5F8] card-hover-effect">
                   <div className="font-mono font-bold text-[#D4A373] text-sm">36 States Reach</div>
                   <div className="text-xs text-[#8A7F8E]">Doorstep courier dispatch nationwide</div>
                 </div>
@@ -411,18 +418,18 @@ export const HomePage: React.FC<HomePageProps> = ({
             </div>
 
             <div className="lg:col-span-6 grid grid-cols-2 gap-4">
-              <div className="aspect-3/4 rounded-[5px] overflow-hidden border border-[#FFE4EC] shadow-sm">
+              <div className="aspect-3/4 rounded-[5px] overflow-hidden border border-[#FFE4EC] shadow-sm group">
                 <img
                   src="https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?auto=format&fit=crop&w=800&q=80"
                   alt="Blush & Bloom Fashion Look"
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover img-zoom-hover"
                 />
               </div>
-              <div className="aspect-3/4 rounded-[5px] overflow-hidden border border-[#FFE4EC] shadow-sm mt-6">
+              <div className="aspect-3/4 rounded-[5px] overflow-hidden border border-[#FFE4EC] shadow-sm mt-6 group">
                 <img
                   src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=800&q=80"
                   alt="Blush Satin Collection"
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover img-zoom-hover"
                 />
               </div>
             </div>
@@ -430,7 +437,7 @@ export const HomePage: React.FC<HomePageProps> = ({
         </div>
       </section>
 
-      {/* How Direct Ordering Works */}
+      {/* How Direct Ordering Works (Template 3-Box Flow) */}
       <section id="how-it-works" className="py-14 sm:py-20 bg-[#FFF5F8] border-b border-[#FFE4EC]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-[#C2185B] uppercase tracking-wider mb-2">
@@ -445,7 +452,7 @@ export const HomePage: React.FC<HomePageProps> = ({
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
-            <div className="bg-white border border-[#FFE4EC] p-6 rounded-[5px] shadow-xs relative">
+            <div className="bg-white border border-[#FFE4EC] p-6 rounded-[5px] shadow-xs relative card-hover-effect">
               <div className="text-3xl font-black font-mono text-[#FFE4EC] absolute top-4 right-4">
                 01
               </div>
@@ -460,7 +467,7 @@ export const HomePage: React.FC<HomePageProps> = ({
               </p>
             </div>
 
-            <div className="bg-white border border-[#FFE4EC] p-6 rounded-[5px] shadow-xs relative">
+            <div className="bg-white border border-[#FFE4EC] p-6 rounded-[5px] shadow-xs relative card-hover-effect">
               <div className="text-3xl font-black font-mono text-[#FFE4EC] absolute top-4 right-4">
                 02
               </div>
@@ -475,7 +482,7 @@ export const HomePage: React.FC<HomePageProps> = ({
               </p>
             </div>
 
-            <div className="bg-white border border-[#FFE4EC] p-6 rounded-[5px] shadow-xs relative">
+            <div className="bg-white border border-[#FFE4EC] p-6 rounded-[5px] shadow-xs relative card-hover-effect">
               <div className="text-3xl font-black font-mono text-[#FFE4EC] absolute top-4 right-4">
                 03
               </div>
@@ -498,37 +505,41 @@ export const HomePage: React.FC<HomePageProps> = ({
 
       {/* FAQs Section */}
       <section className="py-14 sm:py-20 bg-white border-b border-[#FFE4EC]">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-10">
-            <span className="text-xs font-mono font-bold text-[#C2185B] uppercase tracking-wider">
-              Hassle-Free Shopping
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-black text-[#2D2430] font-display mt-1">
+            <div className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-[#C2185B] uppercase tracking-wider mb-2 bg-[#FFE4EC] border border-[#E75480]/30 px-3 py-1 rounded-[5px]">
+              <HelpCircle className="w-3.5 h-3.5 text-[#E75480]" />
+              <span>Questions &amp; Answers</span>
+            </div>
+            <h2 className="text-2xl sm:text-4xl font-black text-[#2D2430] font-display">
               Frequently Asked Questions
             </h2>
+            <p className="text-xs sm:text-sm text-[#8A7F8E] mt-1">
+              Everything you need to know about our Pay on Delivery and sizing guarantee.
+            </p>
           </div>
 
           <div className="space-y-3">
-            {homeFaqs.map((faq, i) => {
-              const isOpen = openFaqIndex === i;
+            {homeFaqs.map((faq, idx) => {
+              const isOpen = openFaqIndex === idx;
               return (
                 <div
-                  key={i}
-                  className="border border-[#FFE4EC] rounded-[5px] overflow-hidden bg-[#FFF5F8] transition-all"
+                  key={idx}
+                  className="bg-[#FFF5F8] border border-[#FFE4EC] rounded-[5px] overflow-hidden transition-all"
                 >
                   <button
-                    onClick={() => setOpenFaqIndex(isOpen ? null : i)}
-                    className="w-full text-left px-5 py-4 flex items-center justify-between gap-4 font-bold text-sm text-[#2D2430] hover:text-[#C2185B]"
+                    onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
+                    className="w-full text-left p-4 sm:p-5 flex items-center justify-between gap-4 font-bold text-sm sm:text-base text-[#2D2430] hover:text-[#C2185B] transition-colors"
                   >
                     <span>{faq.q}</span>
                     {isOpen ? (
-                      <ChevronUp className="w-4 h-4 text-[#C2185B] shrink-0" />
+                      <ChevronUp className="w-5 h-5 text-[#C2185B] shrink-0" />
                     ) : (
-                      <ChevronDown className="w-4 h-4 text-[#8A7F8E] shrink-0" />
+                      <ChevronDown className="w-5 h-5 text-[#8A7F8E] shrink-0" />
                     )}
                   </button>
                   {isOpen && (
-                    <div className="px-5 pb-5 text-xs text-[#8A7F8E] leading-relaxed border-t border-[#FFE4EC] pt-3 bg-white">
+                    <div className="px-4 pb-4 sm:px-5 sm:pb-5 text-xs sm:text-sm text-[#8A7F8E] leading-relaxed border-t border-[#FFE4EC] pt-3">
                       {faq.a}
                     </div>
                   )}
@@ -540,13 +551,25 @@ export const HomePage: React.FC<HomePageProps> = ({
           <div className="text-center mt-8">
             <button
               onClick={() => navigate('/faq')}
-              className="text-xs font-mono font-bold text-[#C2185B] hover:underline"
+              className="text-xs font-mono font-bold text-[#C2185B] hover:text-[#E75480] btn-text-animated"
             >
-              View Full Sizing &amp; Shipping Guide →
+              <span>View Full Sizing Guide &amp; All FAQs</span>
+              <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </div>
         </div>
       </section>
+
+      {/* Quick View Modal */}
+      <QuickViewModal
+        product={quickViewProduct}
+        isOpen={!!quickViewProduct}
+        onClose={() => setQuickViewProduct(null)}
+        onSelectFullDetail={(slug) => {
+          setQuickViewProduct(null);
+          onSelectProduct(slug);
+        }}
+      />
     </div>
   );
 };

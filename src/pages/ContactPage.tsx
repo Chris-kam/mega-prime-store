@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Phone, MessageSquare, Mail, MapPin, Clock, Send, CheckCircle2 } from 'lucide-react';
+import { Phone, MessageSquare, Mail, MapPin, Clock, Send, CheckCircle2, ArrowRight } from 'lucide-react';
 
 interface ContactPageProps {
   navigate: (path: string) => void;
@@ -21,8 +21,20 @@ export const ContactPage: React.FC<ContactPageProps> = ({ navigate }) => {
   };
 
   return (
-    <div className="min-h-screen bg-[#FFF5F8] text-[#2D2430] py-12 sm:py-20">
+    <div className="min-h-screen bg-[#FFF5F8] text-[#2D2430] py-8 sm:py-16">
       <div className="max-w-5xl mx-auto px-4 sm:px-6">
+        {/* Template Breadcrumb */}
+        <nav className="flex items-center gap-2 text-xs font-mono text-[#8A7F8E] mb-6">
+          <button
+            onClick={() => navigate('/')}
+            className="hover:text-[#C2185B] transition-colors"
+          >
+            Home
+          </button>
+          <span>/</span>
+          <span className="text-[#C2185B] font-bold">Fashion Concierge &amp; Support</span>
+        </nav>
+
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-12">
           <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#C2185B] bg-[#FFE4EC] px-3.5 py-1.5 rounded-[5px] border border-[#E75480]/30 shadow-xs">
@@ -114,13 +126,13 @@ export const ContactPage: React.FC<ContactPageProps> = ({ navigate }) => {
               </div>
               <div>
                 <div className="text-xs font-mono text-[#8A7F8E] uppercase font-bold">
-                  Fulfillment & Logistics Facility
+                  Fulfillment &amp; Logistics Facility
                 </div>
                 <div className="font-bold text-[#2D2430] text-sm mt-0.5">
                   Plot 14, Commercial Avenue, Ikeja, Lagos State, Nigeria
                 </div>
                 <p className="text-xs text-[#8A7F8E] mt-0.5">
-                  Central distribution depot serving all 36 Nigerian states & FCT.
+                  Central distribution depot serving all 36 Nigerian states &amp; FCT.
                 </p>
               </div>
             </div>
@@ -189,10 +201,11 @@ export const ContactPage: React.FC<ContactPageProps> = ({ navigate }) => {
                     onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
                     className="w-full bg-white border border-[#FFE4EC] focus:border-[#E75480] focus:ring-2 focus:ring-[#E75480]/20 text-[#2D2430] rounded-[5px] px-3.5 py-2.5 text-sm"
                   >
-                    <option value="Order Tracking & Delivery Inquiry">Order Tracking & Delivery Inquiry</option>
-                    <option value="Product Details & Compatibility">Product Details & Compatibility</option>
-                    <option value="Bulk Purchase or Wholesale Units">Bulk Purchase or Wholesale Units</option>
-                    <option value="Warranty & 7-Day Replacement Request">Warranty & 7-Day Replacement Request</option>
+                    <option value="Sizing & Measurement Assistance">Sizing &amp; Measurement Assistance (UK 6–20)</option>
+                    <option value="Order Tracking & Delivery Inquiry">Order Tracking &amp; Delivery Inquiry</option>
+                    <option value="Ankara Fabric & Styling Advice">Ankara Fabric &amp; Styling Advice</option>
+                    <option value="Bridal Train or Bulk Fashion Order">Bridal Train or Bulk Fashion Order</option>
+                    <option value="7-Day Sizing Exchange Request">7-Day Sizing Exchange Request</option>
                     <option value="General Inquiries">General Inquiries</option>
                   </select>
                 </div>
@@ -206,16 +219,16 @@ export const ContactPage: React.FC<ContactPageProps> = ({ navigate }) => {
                     required
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    placeholder="Provide your Order ID (if applicable) and detailed inquiry..."
+                    placeholder="Provide your Order ID (if applicable), preferred style, and detailed inquiry..."
                     className="w-full bg-white border border-[#FFE4EC] focus:border-[#E75480] focus:ring-2 focus:ring-[#E75480]/20 text-[#2D2430] rounded-[5px] px-3.5 py-2.5 text-sm resize-none"
                   />
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full bg-[#E75480] hover:bg-[#C2185B] text-white font-bold text-sm py-3 px-6 rounded-[5px] flex items-center justify-center gap-2 transition-all shadow-sm"
+                  className="group w-full bg-[#E75480] hover:bg-[#C2185B] text-white font-bold text-sm py-3 px-6 rounded-[5px] flex items-center justify-center gap-2 transition-all shadow-sm active:scale-95"
                 >
-                  <Send className="w-4 h-4" />
+                  <Send className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                   <span>SEND INQUIRY TO DISPATCH DESK</span>
                 </button>
               </form>

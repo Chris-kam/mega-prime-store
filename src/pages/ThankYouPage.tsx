@@ -1,5 +1,5 @@
 import React from 'react';
-import { CheckCircle2, MessageCircle, Phone, Truck, ShieldCheck, ArrowRight, ShoppingBag } from 'lucide-react';
+import { CheckCircle2, MessageCircle, Phone, Truck, ShieldCheck, ArrowRight, ShoppingBag, Clock, PackageCheck, Home } from 'lucide-react';
 import { OrderResult } from '../types';
 
 interface ThankYouPageProps {
@@ -33,28 +33,28 @@ Total Amount: ${details.totalFormatted}`;
       <div className="max-w-3xl mx-auto px-4 sm:px-6">
         <div className="bg-white rounded-[5px] border border-[#FFE4EC] shadow-sm overflow-hidden p-6 sm:p-10">
           {/* Top Success Badge */}
-          <div className="w-20 h-20 rounded-[5px] bg-[#FFE4EC] text-[#C2185B] border border-[#E75480]/30 flex items-center justify-center mx-auto mb-6 shadow-xs">
+          <div className="w-20 h-20 rounded-full bg-[#FFE4EC] text-[#C2185B] border border-[#E75480]/30 flex items-center justify-center mx-auto mb-6 shadow-xs">
             <CheckCircle2 className="w-10 h-10 stroke-[2.5] text-[#E75480]" />
           </div>
 
           <div className="text-center">
-            <div className="inline-flex items-center gap-1.5 bg-[#FFE4EC] text-[#C2185B] text-xs font-mono font-bold uppercase tracking-wider px-4 py-1 rounded-[5px] border border-[#E75480]/30 mb-4">
+            <div className="inline-flex items-center gap-1.5 bg-[#FFE4EC] text-[#C2185B] text-xs font-mono font-bold uppercase tracking-wider px-4 py-1 rounded-[5px] border border-[#E75480]/30 mb-4 shadow-xs">
               <span>Order Received Successfully</span>
             </div>
 
             <h1 className="text-3xl sm:text-4xl font-black text-[#2D2430] tracking-tight font-display">
               Thank You, {firstName}!
             </h1>
-            <p className="text-base sm:text-lg text-[#2D2430] mt-2">
-              Your order details have been recorded with <strong className="text-[#C2185B]">Megaprime</strong>.
+            <p className="text-base sm:text-lg text-[#2D2430] mt-2 font-medium">
+              Your fashion order has been safely recorded with <strong className="text-[#C2185B]">Blush &amp; Bloom by Megaprime</strong>.
             </p>
-            <p className="text-sm text-[#8A7F8E] mt-1 font-semibold">
-              <span className="text-[#C2185B]">Recommended final step:</span> click below to confirm your order directly on WhatsApp for priority dispatch.
+            <p className="text-xs sm:text-sm text-[#8A7F8E] mt-1.5">
+              <span className="text-[#C2185B] font-bold">Recommended next step:</span> Click below to confirm directly with our Lagos dispatch officer via WhatsApp for expedited packing.
             </p>
           </div>
 
           {/* Reference Banner */}
-          <div className="mt-8 border-t border-[#FFE4EC] pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 bg-[#FFF5F8] border border-[#FFE4EC] p-4 rounded-[5px]">
+          <div className="mt-8 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 bg-[#FFF5F8] border border-[#FFE4EC] p-4 sm:p-5 rounded-[5px]">
             <div>
               <div className="text-xs font-mono font-bold uppercase tracking-wider text-[#8A7F8E]">
                 Order Reference Code
@@ -63,7 +63,7 @@ Total Amount: ${details.totalFormatted}`;
                 {orderRef}
               </div>
             </div>
-            <div className="text-xs font-mono text-[#C2185B] bg-[#FFE4EC] border border-[#E75480]/30 px-3 py-1.5 rounded-[5px] font-bold">
+            <div className="text-xs font-mono text-[#C2185B] bg-[#FFE4EC] border border-[#E75480]/30 px-3.5 py-1.5 rounded-[5px] font-bold">
               100% Free Nationwide Delivery
             </div>
           </div>
@@ -74,59 +74,59 @@ Total Amount: ${details.totalFormatted}`;
               href={getWhatsAppUrl()}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full bg-[#25D366] hover:bg-[#20ba59] text-white font-bold text-base sm:text-lg py-4 px-6 rounded-[5px] flex items-center justify-center gap-3 transition-all shadow-md active:scale-[0.99]"
+              className="w-full bg-[#25D366] hover:bg-[#20ba59] text-white font-bold text-sm sm:text-base py-4 px-6 rounded-[5px] flex items-center justify-center gap-2.5 transition-all shadow-md active:scale-[0.99] font-mono"
             >
-              <MessageCircle className="w-6 h-6 fill-white" />
-              <span>CONFIRM ORDER ON WHATSAPP (INSTANT QUEUE)</span>
+              <MessageCircle className="w-5 h-5 fill-white" />
+              <span>CONFIRM ORDER ON WHATSAPP (FAST TRACK)</span>
             </a>
             <p className="text-[11px] text-center text-[#8A7F8E] font-mono mt-2">
-              Opens WhatsApp with your pre-formatted order receipt ready to send to our Lagos dispatch desk.
+              Opens WhatsApp with your pre-formatted order summary ready for our dispatch team.
             </p>
           </div>
 
           {/* Receipt Details Table */}
           {details && (
-            <div className="mt-8 bg-[#FFF5F8] border border-[#FFE4EC] rounded-[5px] p-5 sm:p-6 space-y-3.5 text-xs sm:text-sm">
+            <div className="mt-8 bg-[#FFF5F8] border border-[#FFE4EC] rounded-[5px] p-5 sm:p-6 space-y-3 text-xs sm:text-sm">
               <h3 className="font-bold text-[#2D2430] border-b border-[#FFE4EC] pb-2 text-sm font-display flex items-center justify-between">
                 <span>Digital Order Receipt</span>
                 <span className="text-[#C2185B] font-mono text-xs">{details.orderDate}</span>
               </h3>
 
-              <div className="flex justify-between py-1 border-b border-[#FFE4EC]">
+              <div className="flex justify-between py-1 border-b border-[#FFE4EC]/70">
                 <span className="text-[#8A7F8E]">Product:</span>
                 <span className="font-bold text-[#2D2430] text-right">{details.productName}</span>
               </div>
 
-              <div className="flex justify-between py-1 border-b border-[#FFE4EC]">
+              <div className="flex justify-between py-1 border-b border-[#FFE4EC]/70">
                 <span className="text-[#8A7F8E]">Selected Package:</span>
                 <span className="font-semibold text-[#2D2430] text-right">{details.packageName}</span>
               </div>
 
-              <div className="flex justify-between py-1 border-b border-[#FFE4EC]">
+              <div className="flex justify-between py-1 border-b border-[#FFE4EC]/70">
                 <span className="text-[#8A7F8E]">Delivery Fee:</span>
                 <span className="font-bold text-[#C2185B] font-mono text-right">₦0 (100% Free)</span>
               </div>
 
-              <div className="flex justify-between py-1 border-b border-[#FFE4EC]">
+              <div className="flex justify-between py-1 border-b border-[#FFE4EC]/70">
                 <span className="text-[#8A7F8E] font-bold">Total Amount Payable:</span>
                 <span className="font-black text-[#C2185B] text-base font-display text-right">
                   {details.totalFormatted}
                 </span>
               </div>
 
-              <div className="flex justify-between py-1 border-b border-[#FFE4EC]">
+              <div className="flex justify-between py-1 border-b border-[#FFE4EC]/70">
                 <span className="text-[#8A7F8E]">Delivery Contact:</span>
                 <span className="font-medium text-[#2D2430] text-right font-mono">
                   {details.customerName} ({details.phone})
                 </span>
               </div>
 
-              <div className="flex justify-between py-1 border-b border-[#FFE4EC]">
+              <div className="flex justify-between py-1 border-b border-[#FFE4EC]/70">
                 <span className="text-[#8A7F8E]">Destination State:</span>
                 <span className="font-bold text-[#2D2430] text-right">{details.state}</span>
               </div>
 
-              <div className="flex justify-between py-1 border-b border-[#FFE4EC]">
+              <div className="flex justify-between py-1 border-b border-[#FFE4EC]/70">
                 <span className="text-[#8A7F8E]">Street Address:</span>
                 <span className="font-medium text-[#2D2430] text-right max-w-xs">{details.deliveryAddress}</span>
               </div>
@@ -140,59 +140,60 @@ Total Amount: ${details.totalFormatted}`;
             </div>
           )}
 
-          {/* Next Steps 3-Box Timeline */}
+          {/* Next Steps 3-Box Timeline (Template Pattern) */}
           <div className="mt-8 pt-6 border-t border-[#FFE4EC]">
             <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-[#2D2430] mb-4 text-center sm:text-left">
-              What Happens Next?
+              Fulfillment Journey &amp; Next Steps
             </h4>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div className="bg-[#FFF5F8] border border-[#FFE4EC] rounded-[5px] p-4 text-xs">
-                <div className="w-7 h-7 rounded-[5px] bg-[#FFE4EC] text-[#C2185B] font-mono font-bold flex items-center justify-center mb-2">
+              <div className="bg-[#FFF5F8] border border-[#FFE4EC] rounded-[5px] p-4 text-xs card-hover-effect">
+                <div className="w-8 h-8 rounded-full bg-[#FFE4EC] text-[#C2185B] font-mono font-bold flex items-center justify-center mb-2.5">
                   1
                 </div>
-                <div className="font-bold text-[#2D2430] font-display">Verification Call</div>
-                <p className="text-[#8A7F8E] mt-1 text-[11px] leading-relaxed">
-                  Our dispatch officer will phone or WhatsApp you to verify your delivery address and schedule.
+                <div className="font-bold text-[#2D2430] mb-1 font-display">Dispatch Phone Call</div>
+                <p className="text-[#8A7F8E] text-[11px] leading-relaxed">
+                  Our verification officer will call your phone to verify your exact street address.
                 </p>
               </div>
 
-              <div className="bg-[#FFF5F8] border border-[#FFE4EC] rounded-[5px] p-4 text-xs">
-                <div className="w-7 h-7 rounded-[5px] bg-[#FFE4EC] text-[#C2185B] font-mono font-bold flex items-center justify-center mb-2">
+              <div className="bg-[#FFF5F8] border border-[#FFE4EC] rounded-[5px] p-4 text-xs card-hover-effect">
+                <div className="w-8 h-8 rounded-full bg-[#FFE4EC] text-[#C2185B] font-mono font-bold flex items-center justify-center mb-2.5">
                   2
                 </div>
-                <div className="font-bold text-[#2D2430] font-display">Hub Inspection</div>
-                <p className="text-[#8A7F8E] mt-1 text-[11px] leading-relaxed">
-                  Your parcel is tested and securely packed at our central Ikeja distribution facility.
+                <div className="font-bold text-[#2D2430] mb-1 font-display">QA Inspection &amp; Pack</div>
+                <p className="text-[#8A7F8E] text-[11px] leading-relaxed">
+                  Your piece is inspected for flawless seams and steam pressed at our Ikeja logistics center.
                 </p>
               </div>
 
-              <div className="bg-[#FFF5F8] border border-[#FFE4EC] rounded-[5px] p-4 text-xs">
-                <div className="w-7 h-7 rounded-[5px] bg-[#FFE4EC] text-[#C2185B] font-mono font-bold flex items-center justify-center mb-2">
+              <div className="bg-[#FFF5F8] border border-[#FFE4EC] rounded-[5px] p-4 text-xs card-hover-effect">
+                <div className="w-8 h-8 rounded-full bg-[#FFE4EC] text-[#C2185B] font-mono font-bold flex items-center justify-center mb-2.5">
                   3
                 </div>
-                <div className="font-bold text-[#2D2430] font-display">Doorstep Delivery</div>
-                <p className="text-[#8A7F8E] mt-1 text-[11px] leading-relaxed">
-                  Courier delivers straight to your hands with 100% free delivery across Nigeria.
+                <div className="font-bold text-[#2D2430] mb-1 font-display">Doorstep Delivery &amp; POS</div>
+                <p className="text-[#8A7F8E] text-[11px] leading-relaxed">
+                  Courier arrives at your gate. Open, inspect your dress, and pay via cash, POS, or transfer!
                 </p>
               </div>
             </div>
           </div>
 
-          {/* Buttons: Call Support or Browse More */}
-          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a
-              href="tel:+2348068515242"
-              className="w-full sm:w-auto bg-[#FFE4EC] hover:bg-[#FFE4EC]/70 text-[#2D2430] font-bold text-xs sm:text-sm py-3 px-6 rounded-[5px] border border-[#E75480]/30 flex items-center justify-center gap-2 transition-colors"
-            >
-              <Phone className="w-4 h-4 text-[#C2185B]" />
-              <span>Call Dispatch Hub (+234 8160844108)</span>
-            </a>
+          {/* Action to continue browsing */}
+          <div className="mt-8 text-center pt-6 border-t border-[#FFE4EC] flex flex-col sm:flex-row items-center justify-center gap-3">
             <button
               onClick={() => navigate('/products')}
-              className="w-full sm:w-auto bg-[#E75480] hover:bg-[#C2185B] text-white font-bold text-xs sm:text-sm py-3 px-6 rounded-[5px] flex items-center justify-center gap-2 transition-colors"
+              className="w-full sm:w-auto bg-[#E75480] hover:bg-[#C2185B] text-white text-xs font-mono font-bold px-6 py-3 rounded-[5px] transition-colors flex items-center justify-center gap-2"
             >
               <ShoppingBag className="w-4 h-4" />
-              <span>Browse Other Products</span>
+              <span>EXPLORE MORE LOOKS</span>
+            </button>
+
+            <button
+              onClick={() => navigate('/')}
+              className="w-full sm:w-auto bg-white hover:bg-[#FFE4EC]/50 text-[#2D2430] text-xs font-mono font-bold px-6 py-3 rounded-[5px] border border-[#FFE4EC] transition-colors flex items-center justify-center gap-1.5"
+            >
+              <Home className="w-4 h-4" />
+              <span>Return to Home</span>
             </button>
           </div>
         </div>

@@ -5,6 +5,7 @@ import { TrustBar } from './components/TrustBar';
 import { WhatsAppFloatingButton } from './components/WhatsAppFloatingButton';
 import { RecentOrderPopup } from './components/RecentOrderPopup';
 import { ContentPipelineModal } from './components/ContentPipelineModal';
+import { WishlistDrawer } from './components/WishlistDrawer';
 import { HomePage } from './pages/HomePage';
 import { ProductsPage } from './pages/ProductsPage';
 import { ProductDetailPage } from './pages/ProductDetailPage';
@@ -29,6 +30,7 @@ export default function App() {
   });
 
   const [pipelineModalOpen, setPipelineModalOpen] = useState(false);
+  const [wishlistOpen, setWishlistOpen] = useState(false);
 
   const [lastOrderResult, setLastOrderResult] = useState<OrderResult | null>(() => {
     if (typeof window !== 'undefined') {
@@ -150,6 +152,7 @@ export default function App() {
         navigate={navigate}
         products={catalogProducts}
         onOpenPipelineModal={() => setPipelineModalOpen(true)}
+        onOpenWishlist={() => setWishlistOpen(true)}
       />
 
       {/* Main Content View */}
@@ -237,6 +240,17 @@ export default function App() {
         onClose={() => setPipelineModalOpen(false)}
         currentProductSlug={activeProduct?.slug}
         onCatalogUpdated={(newProducts) => setCatalogProducts(newProducts)}
+      />
+
+      {/* Wishlist / Saved Looks Offcanvas Drawer */}
+      <WishlistDrawer
+        isOpen={wishlistOpen}
+        onClose={() => setWishlistOpen(false)}
+        products={catalogProducts}
+        onSelectProduct={(slug) => {
+          setWishlistOpen(false);
+          navigate(`/products/${slug}`);
+        }}
       />
     </div>
   );
