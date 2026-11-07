@@ -12,7 +12,6 @@ interface ProductsPageProps {
   products: Product[];
   navigate: (path: string) => void;
   onSelectProduct: (slug: string) => void;
-  onOpenPipelineModal: () => void;
 }
 
 export const ProductsPage: React.FC<ProductsPageProps> = ({
@@ -20,7 +19,6 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({
   products,
   navigate,
   onSelectProduct,
-  onOpenPipelineModal,
 }) => {
   // Read category from URL query param if present
   const [selectedCategory, setSelectedCategory] = useState<string>(() => {
@@ -321,15 +319,6 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({
                 <option value="price-high">Price: High to Low</option>
                 <option value="rating">Highest Rated</option>
               </select>
-
-              <button
-                onClick={onOpenPipelineModal}
-                className="bg-[#FFE4EC] text-[#C2185B] border border-[#E75480]/30 hover:bg-[#E75480] hover:text-white px-3 py-2 rounded-[5px] transition-all flex items-center gap-1 font-bold text-xs"
-                title="Open AI Content Pipeline"
-              >
-                <Sparkles className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">AI Pipeline</span>
-              </button>
             </div>
           </div>
 

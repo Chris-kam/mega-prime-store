@@ -7,7 +7,7 @@ interface MegaprimeLogoProps {
 }
 
 export const MegaprimeLogo: React.FC<MegaprimeLogoProps> = ({
-  className = 'h-8 sm:h-9 w-auto',
+  className = 'h-8 sm:h-10 w-auto',
   variant = 'colored',
   iconOnly = false,
 }) => {
@@ -16,7 +16,7 @@ export const MegaprimeLogo: React.FC<MegaprimeLogoProps> = ({
   const primeColor = isDark ? '#D4A373' : '#C2185B';
 
   return (
-    <div className={`inline-flex items-center gap-2.5 select-none ${className}`}>
+    <div className={`inline-flex items-center gap-1.5 sm:gap-2.5 select-none ${className}`}>
       {/* Emblem SVG Icon */}
       <svg
         viewBox="0 0 44 44"
@@ -79,18 +79,18 @@ export const MegaprimeLogo: React.FC<MegaprimeLogoProps> = ({
       {/* Typography Wordmark */}
       {!iconOnly && (
         <div className="flex flex-col justify-center leading-none">
-          <div className="flex items-baseline tracking-tight font-display font-black text-xl sm:text-2xl">
+          <div className="flex items-baseline tracking-tight font-display font-black text-lg sm:text-2xl">
             <span style={{ color: textColor }}>Mega</span>
             <span style={{ color: primeColor }} className="ml-0.5">
               prime
             </span>
-            <span className="text-[#D4A373] text-xs font-mono font-bold ml-1">✦</span>
+            <span className="text-[#D4A373] text-[10px] sm:text-xs font-mono font-bold ml-0.5 sm:ml-1">✦</span>
           </div>
           <span
-            className="text-[9px] font-mono tracking-widest uppercase font-bold mt-0.5"
+            className="text-[8px] sm:text-[9px] font-mono tracking-wider sm:tracking-widest uppercase font-bold mt-0.5 hidden xs:block truncate max-w-[130px] sm:max-w-none"
             style={{ color: isDark ? '#D4A373' : '#C2185B' }}
           >
-            Blush &amp; Bloom Fashion Edit
+            Blush &amp; Bloom
           </span>
         </div>
       )}

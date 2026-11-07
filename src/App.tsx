@@ -151,8 +151,6 @@ export default function App() {
         currentPath={currentPath}
         navigate={navigate}
         products={catalogProducts}
-        onOpenPipelineModal={() => setPipelineModalOpen(true)}
-        onOpenWishlist={() => setWishlistOpen(true)}
       />
 
       {/* Main Content View */}
@@ -162,7 +160,6 @@ export default function App() {
             products={catalogProducts}
             onSelectProduct={(slug) => navigate(`/products/${slug}`)}
             navigate={navigate}
-            onOpenPipelineModal={() => setPipelineModalOpen(true)}
           />
         )}
 
@@ -172,7 +169,6 @@ export default function App() {
             products={catalogProducts}
             navigate={navigate}
             onSelectProduct={(slug) => navigate(`/products/${slug}`)}
-            onOpenPipelineModal={() => setPipelineModalOpen(true)}
           />
         )}
 
@@ -182,7 +178,6 @@ export default function App() {
             onOrderSuccess={handleOrderSuccess}
             navigate={navigate}
             onSelectProduct={(slug) => navigate(`/products/${slug}`)}
-            onOpenPipelineModal={() => setPipelineModalOpen(true)}
           />
         )}
 
@@ -225,7 +220,6 @@ export default function App() {
       <Footer
         navigate={navigate}
         products={catalogProducts}
-        onOpenPipelineModal={() => setPipelineModalOpen(true)}
       />
 
       {/* Floating WhatsApp Concierge Button */}

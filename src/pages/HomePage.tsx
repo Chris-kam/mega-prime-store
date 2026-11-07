@@ -27,14 +27,12 @@ interface HomePageProps {
   products: Product[];
   onSelectProduct: (slug: string) => void;
   navigate: (path: string) => void;
-  onOpenPipelineModal: () => void;
 }
 
 export const HomePage: React.FC<HomePageProps> = ({
   products,
   onSelectProduct,
   navigate,
-  onOpenPipelineModal,
 }) => {
   const [activeCategory, setActiveCategory] = useState('All Products');
   const [activeBannerIndex, setActiveBannerIndex] = useState(0);
@@ -197,17 +195,17 @@ export const HomePage: React.FC<HomePageProps> = ({
           </div>
 
           {/* Heading */}
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-[#2D2430] tracking-tight max-w-4xl mx-auto leading-[1.12] mb-4 sm:mb-5 font-display px-2">
+          <h1 className="text-2xl xs:text-3xl sm:text-5xl lg:text-6xl font-black text-[#2D2430] tracking-tight max-w-4xl mx-auto leading-[1.15] mb-3 sm:mb-5 font-display px-1 sm:px-2">
             {currentBanner.title}
           </h1>
 
           {/* Subheading */}
-          <p className="text-sm sm:text-base lg:text-lg text-[#8A7F8E] max-w-2xl mx-auto leading-relaxed mb-6 sm:mb-8 px-1">
+          <p className="text-xs sm:text-base lg:text-lg text-[#8A7F8E] max-w-2xl mx-auto leading-relaxed mb-6 sm:mb-8 px-1">
             {currentBanner.subtitle}
           </p>
 
           {/* CTAs */}
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 mb-8 sm:mb-10 px-0">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-2.5 sm:gap-4 mb-6 sm:mb-10 px-0">
             <a
               href="#products-section"
               onClick={() => {
@@ -215,54 +213,46 @@ export const HomePage: React.FC<HomePageProps> = ({
                   setActiveCategory(currentBanner.categoryTarget);
                 }
               }}
-              className="w-full sm:w-auto bg-[#E75480] hover:bg-[#C2185B] text-white font-bold text-xs sm:text-sm py-3.5 px-6 sm:px-8 rounded-[5px] shadow-sm transition-all flex items-center justify-center gap-2 active:scale-95 font-mono"
+              className="w-full sm:w-auto bg-[#E75480] hover:bg-[#C2185B] text-white font-bold text-xs sm:text-sm py-3 sm:py-3.5 px-5 sm:px-8 rounded-[5px] shadow-sm transition-all flex items-center justify-center gap-2 active:scale-95 font-mono"
             >
               <ShoppingBag className="w-4 h-4 sm:w-5 sm:h-5" />
               <span>{currentBanner.ctaText}</span>
               <ArrowRight className="w-4 h-4" />
             </a>
-
-            <button
-              onClick={onOpenPipelineModal}
-              className="w-full sm:w-auto bg-white hover:bg-[#FFE4EC]/50 text-[#C2185B] font-bold text-xs sm:text-sm py-3.5 px-5 sm:px-6 rounded-[5px] border border-[#E75480]/30 transition-all flex items-center justify-center gap-2 font-mono shadow-xs"
-            >
-              <Sparkles className="w-4 h-4 text-[#E75480]" />
-              <span>AI CONTENT ENGINE</span>
-            </button>
           </div>
 
           {/* 4 Trust stats for Fashion Store */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3.5 max-w-4xl mx-auto pt-5 sm:pt-6 border-t border-[#FFE4EC] text-left">
-            <div className="bg-white border border-[#FFE4EC] rounded-[5px] p-3.5 sm:p-4 shadow-xs card-hover-effect">
-              <div className="flex items-center gap-1.5 text-[#C2185B] font-mono font-bold text-sm sm:text-base">
-                <Truck className="w-4 h-4 text-[#E75480] shrink-0" />
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3.5 max-w-4xl mx-auto pt-4 sm:pt-6 border-t border-[#FFE4EC] text-left">
+            <div className="bg-white border border-[#FFE4EC] rounded-[5px] p-2.5 sm:p-4 shadow-xs card-hover-effect">
+              <div className="flex items-center gap-1.5 text-[#C2185B] font-mono font-bold text-xs sm:text-base">
+                <Truck className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#E75480] shrink-0" />
                 <span>100% Free</span>
               </div>
-              <div className="text-[10px] sm:text-xs text-[#8A7F8E] font-medium mt-0.5">Nationwide Delivery Across Nigeria</div>
+              <div className="text-[9px] xs:text-[10px] sm:text-xs text-[#8A7F8E] font-medium mt-0.5">Nationwide Delivery</div>
             </div>
 
-            <div className="bg-white border border-[#FFE4EC] rounded-[5px] p-3.5 sm:p-4 shadow-xs card-hover-effect">
-              <div className="flex items-center gap-1.5 text-[#D4A373] font-mono font-bold text-sm sm:text-base">
-                <ShieldCheck className="w-4 h-4 text-[#D4A373] shrink-0" />
+            <div className="bg-white border border-[#FFE4EC] rounded-[5px] p-2.5 sm:p-4 shadow-xs card-hover-effect">
+              <div className="flex items-center gap-1.5 text-[#D4A373] font-mono font-bold text-xs sm:text-base">
+                <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#D4A373] shrink-0" />
                 <span>Pay on Delivery</span>
               </div>
-              <div className="text-[10px] sm:text-xs text-[#8A7F8E] font-medium mt-0.5">Inspect Before You Pay</div>
+              <div className="text-[9px] xs:text-[10px] sm:text-xs text-[#8A7F8E] font-medium mt-0.5">Inspect Before You Pay</div>
             </div>
 
-            <div className="bg-white border border-[#FFE4EC] rounded-[5px] p-3.5 sm:p-4 shadow-xs card-hover-effect">
-              <div className="flex items-center gap-1.5 text-[#C2185B] font-mono font-bold text-sm sm:text-base">
-                <Ruler className="w-4 h-4 text-[#E75480] shrink-0" />
+            <div className="bg-white border border-[#FFE4EC] rounded-[5px] p-2.5 sm:p-4 shadow-xs card-hover-effect">
+              <div className="flex items-center gap-1.5 text-[#C2185B] font-mono font-bold text-xs sm:text-base">
+                <Ruler className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#E75480] shrink-0" />
                 <span>UK 6 to 20</span>
               </div>
-              <div className="text-[10px] sm:text-xs text-[#8A7F8E] font-medium mt-0.5">Designed for Nigerian Curves</div>
+              <div className="text-[9px] xs:text-[10px] sm:text-xs text-[#8A7F8E] font-medium mt-0.5">For Nigerian Curves</div>
             </div>
 
-            <div className="bg-white border border-[#FFE4EC] rounded-[5px] p-3.5 sm:p-4 shadow-xs card-hover-effect">
-              <div className="flex items-center gap-1.5 text-[#D4A373] font-mono font-bold text-sm sm:text-base">
-                <CheckCircle2 className="w-4 h-4 text-[#D4A373] shrink-0" />
+            <div className="bg-white border border-[#FFE4EC] rounded-[5px] p-2.5 sm:p-4 shadow-xs card-hover-effect">
+              <div className="flex items-center gap-1.5 text-[#D4A373] font-mono font-bold text-xs sm:text-base">
+                <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#D4A373] shrink-0" />
                 <span>7-Day Sizing</span>
               </div>
-              <div className="text-[10px] sm:text-xs text-[#8A7F8E] font-medium mt-0.5">Hassle-Free Sizing Exchange</div>
+              <div className="text-[9px] xs:text-[10px] sm:text-xs text-[#8A7F8E] font-medium mt-0.5">Hassle-Free Exchange</div>
             </div>
           </div>
         </div>

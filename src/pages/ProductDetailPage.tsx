@@ -13,7 +13,6 @@ import {
   Ruler,
   Camera,
   ExternalLink,
-  RefreshCw,
   ShoppingBag,
   Scissors,
   CheckCircle2,
@@ -34,7 +33,6 @@ interface ProductDetailPageProps {
   onOrderSuccess: (result: OrderResult) => void;
   navigate: (path: string) => void;
   onSelectProduct: (slug: string) => void;
-  onOpenPipelineModal: () => void;
 }
 
 export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
@@ -42,7 +40,6 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
   onOrderSuccess,
   navigate,
   onSelectProduct,
-  onOpenPipelineModal,
 }) => {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [selectedPackage, setSelectedPackage] = useState<PackageOption>(
@@ -127,14 +124,6 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
             </li>
             <li className="text-[#2D2430] font-bold truncate max-w-xs">{product.name}</li>
           </ul>
-
-          <button
-            onClick={onOpenPipelineModal}
-            className="hidden md:inline-flex items-center gap-1 text-[11px] font-mono text-[#C2185B] bg-[#FFF5F8] border border-[#FFE4EC] px-2.5 py-1 rounded-[5px] hover:bg-[#FFE4EC] transition-colors"
-          >
-            <RefreshCw className="w-3 h-3 text-[#E75480]" />
-            <span>AI Content</span>
-          </button>
         </div>
       </div>
 

@@ -7,7 +7,6 @@ import {
   MessageSquare,
   Mail,
   MapPin,
-  Sparkles,
   Heart,
   Send,
   CheckCircle2,
@@ -22,10 +21,9 @@ import { Product } from '../types';
 interface FooterProps {
   navigate: (path: string) => void;
   products: Product[];
-  onOpenPipelineModal: () => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ navigate, products, onOpenPipelineModal }) => {
+export const Footer: React.FC<FooterProps> = ({ navigate, products }) => {
   const [emailInput, setEmailInput] = useState('');
   const [subscribed, setSubscribed] = useState(false);
 
@@ -194,15 +192,6 @@ export const Footer: React.FC<FooterProps> = ({ navigate, products, onOpenPipeli
                   className="hover:text-[#E75480] hover:translate-x-1.5 transition-all text-left block"
                 >
                   Privacy Policy &amp; Customer Security
-                </button>
-              </li>
-              <li className="pt-2">
-                <button
-                  onClick={onOpenPipelineModal}
-                  className="text-[#E75480] hover:text-white flex items-center gap-1 font-mono text-[11px] font-bold"
-                >
-                  <Sparkles className="w-3.5 h-3.5" />
-                  <span>AI Content Pipeline Engine</span>
                 </button>
               </li>
             </ul>
